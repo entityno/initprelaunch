@@ -413,6 +413,21 @@
 
   let phraseIndex = 0;
   const taglineEl = document.getElementById('tagline');
+  const taglineContainer = taglineEl.parentElement;
+
+  // Measure all phrases and lock height to the tallest
+  (function lockTaglineHeight() {
+    const original = taglineEl.textContent;
+    taglineContainer.style.minHeight = 'auto';
+    let maxH = 0;
+    phrases.forEach(p => {
+      taglineEl.textContent = p;
+      maxH = Math.max(maxH, taglineContainer.offsetHeight);
+    });
+    taglineEl.textContent = original;
+    taglineContainer.style.minHeight = maxH + 'px';
+    window.addEventListener('resize', lockTaglineHeight);
+  })();
 
   setInterval(() => {
     taglineEl.classList.add('fade-out');
